@@ -25,7 +25,6 @@ var delay = false;
 function draw(){
   if(!delay){
     var newVals = newArr(rows, cols);
-    var currTime = millis();
     for(var i = 0; i < rows; i++){
       for(var j = 0; j < cols; j++){
         var x = j*cellWidth;
@@ -50,7 +49,7 @@ function draw(){
     }
     if(!drawing) vals = newVals;
     delay = true;
-    setTimeout(() => delay = false, 1000 - document.getElementById('speed').value);
+    if(!drawing) setTimeout(() => delay = false, 1000 - document.getElementById('speed').value);
   }
 }
 
