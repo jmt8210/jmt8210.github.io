@@ -46,7 +46,7 @@
               <a class="nav-link" aria-current="page" href="#contact">Contact</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="media/Thoms-Resume_2021.pdf" target="_blank">Resume</a>
+              <a class="nav-link" aria-current="page" href="media/Thoms-Resume_2021_no_add.pdf" target="_blank">Resume</a>
             </li>
           </ul>
           <div class="d-flex">
@@ -94,7 +94,20 @@
     <div id="projects" class="album py-5 bg-light">
       <div class="container">
         <h1 class="display-3">Projects</h1>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="row">
+          <div class="col">
+            <div class="card shadow-sm">
+              <iframe class="border border-secondary rounded" src="./conway.html" title="Conway's Game of Life"></iframe>
+              <div class="card-body">
+                <p class="card-text">Created a representation of <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway's Game of Life</a> in p5.js. I was able to translate the rules of the game into code to create cells that interact with one another. I also gained a better of javascript in order to make the experience more interactive with user input.</p>
+              </div>
+              <div class="d-flex justif-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="./conway.html"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="col">
             <div class="card shadow-sm">
               <iframe class="border border-secondary rounded" src="./final_proj.html" title="Data Science Final Project"></iframe>
@@ -108,19 +121,8 @@
               </div>
             </div>
           </div>
-          <div class="col">
-            <div class="card shadow-sm">
-              <iframe class="border border-secondary rounded" src="https://umdtendies.github.io/" title="When Is Tendie Day"></iframe>
-              <div class="card-body">
-                <p class="card-text">As a personal project with a friend, we created a website that displays whether certain food items are available in the school cafeteria. This was determined using a script that scraped the dining services website to download an image of the current menu. We were then able to use image processing and text recognition to determine if the menu contained the specific items. (Currently unavailable due to COVID-19 dining restrictions)</p>
-              </div>
-              <div class="d-flex justif-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="https://umdtendies.github.io/"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
-                </div>
-              </div>
-            </div>
-          </div>
+        </div>
+        <div class="row">
           <div class="col">
             <div class="card shadow-sm">
               <iframe class="border border-secondary rounded" src="./arcstone_http.html" title="Arcstone Capital"></iframe>
@@ -130,6 +132,19 @@
               <div class="d-flex justif-content-between align-items-center">
                 <div class="btn-group">
                   <a href="https://www.arcstonecapital.com"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card shadow-sm">
+              <iframe class="border border-secondary rounded" src="https://umdtendies.github.io/" title="When Is Tendie Day"></iframe>
+              <div class="card-body">
+                <p class="card-text">As a personal project with a friend, we created a website that displays whether certain food items are available in the school cafeteria. This was determined using a script that scraped the dining services website to download an image of the current menu. We were then able to use image processing and text recognition to determine if the menu contained the specific items. (Currently unavailable due to COVID-19 dining restrictions)</p>
+              </div>
+              <div class="d-flex justif-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="https://umdtendies.github.io/"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
                 </div>
               </div>
             </div>
