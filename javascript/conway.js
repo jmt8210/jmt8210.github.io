@@ -47,9 +47,11 @@ function draw(){
         rect(x, y, x+cellWidth, y+cellHeight);
       }
     }
-    if(!drawing) vals = newVals;
-    delay = true;
-    if(!drawing) setTimeout(() => delay = false, 1000 - document.getElementById('speed').value);
+    if(!drawing){
+      vals = newVals;
+      delay = true;
+      setTimeout(() => delay = false, 1000 - document.getElementById('speed').value);
+    }
   }
 }
 
