@@ -1,0 +1,4 @@
+certs/
+ip_list.txt
+node_modules/
+node_app/package_lock.json

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		<link rel="shortcut icon" type="image/x-icon" href="image-square.jpg"/>
+		<title>Justin's Site</title>
+		<style type="text/css" media="screen">
+			body {
+				background-color: #f7f7f7;
+			}
+			a.anchor {
+				position: relative;
+				display: block;
+				visibility: hidden;
+				top: -100px;
+			}
+    		#editor {
+				height: 100%;
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+    		}
+			.contentdiv {
+				width: 100%;
+				height: auto;
+				position: relative;
+				display: inline-block;
+				text-align:center;
+				margin: auto;
+			}
+    		img {
+    		    max-width: 100%;
+    		    max-height: 100%;
+    		    display: block;
+    		    margin: 0 auto;
+    		}
+			.codediv {
+				/*width: 51%;*/
+				height: 200px;
+				position: relative;
+				display: inline-block;
+				margin: auto;
+			}
+			.texclass {
+				width: 42%;
+				height: 200px;
+				position: relative;
+    		    vertical-align: middle;
+    		    text-align: center;
+    		    display: inline-block;
+				margin: auto;
+			}
+			.weatherdiv {
+				width: 316px; 
+				display: inline-block;
+			}
+			.outerweatherdiv {
+				width: 51%;
+				margin: auto;
+				display: inline-block;
+			}
+			.rssdiv {
+				/* width: 42%; */
+				height: 422px;
+				/* text-align: left;
+				margin: auto;
+				display: inline-block; */
+				overflow-y: scroll;
+			}
+			.feature-new {
+				min-width: 300px;
+			}
+			.row {
+				margin-top: -30px;
+			}
+			.col {
+				margin-top: 30px;
+			}
+			h3 {
+				margin-top: 10px;
+			}
+			h3 a:link, h3 a:visited, h3 a:hover, h3 a:active {
+				text-decoration: none;
+				color: rgb(121, 191, 75);
+			}
+			h4 a:link, h4 a:visited, h4 a:hover, h4 a:active {
+				text-decoration: none;
+				color: rgb(69, 95, 105);
+				font-size: 16px;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
+			<a style="margin-left: 5%" class="navbar-brand" href="#"><img src="image-square.jpg" style="border-radius: 30px" width=40px /></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			  <ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+				<a class="nav-link" href="#weather">Weather</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link" href="#news">News</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link" href="#latex">LaTeX</a>
+				</li>
+			  </ul>
+			</div>
+		</nav>
+		<div class="container px-4 py-5">
+			<div class="row g-4 py-5 row-cols-1 row-cols-sm-2">
+				<div class="feature feature-new col">
+					<a id="weather" class="anchor"></a>
+					<div>
+						<a style="height:200px" class="weatherwidget-io" href="https://forecast7.com/en/38d99n76d94/college-park/?unit=us" data-label_1="College Park" data-theme="original" >COLLEGE PARK</a>
+						<script>
+							!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+						</script>
+					</div>
+					<div>
+						<a class="weatherwidget-io" href="https://forecast7.com/en/38d90n77d27/vienna/?unit=us" data-label_1="Vienna" data-theme="original" >Vienna</a>
+						<script>
+							!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+						</script>
+					</div>
+				</div>
+				<div class="feature feature-new col rssdiv border rounded">
+					<a id="news" class="anchor"></a>
+					<script src="//rss.bloople.net/?url=http%3A%2F%2Frss.slashdot.org%2FSlashdot%2FslashdotMain&showtitle=true&detail=-1&limit=5&type=js"></script>
+					<hr/>
+					<script src="//rss.bloople.net/?url=https%3A%2F%2Ffeeds.feedburner.com%2FTechCrunch&showtitle=true&detail=-1&limit=5&type=js"></script>
+					<hr/>
+					<h3><a href="https://cnn.com/">CNN - US</a></h3>
+					<script src="//rss.bloople.net/?url=http%3A%2F%2Frss.cnn.com%2Frss%2Fcnn_topstories.rss&detail=-1&limit=3&showtitle=false&type=js"></script>
+					<hr/>
+					<h3><a href="https://bbc.co.uk/news/">BBC - World</a></h3>
+					<script src="//rss.bloople.net/?url=http%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Fworld%2Frss.xml&detail=-1&limit=3&showtitle=false&type=js"></script>
+					<hr/>
+					<h3><a href="https://xkcd.com/">XKCD</a></h3>
+					<script src="//rss.bloople.net/?url=https%3A%2F%2Fxkcd.com%2Frss.xml&showtitle=false&detail=-1&limit=1&type=js"></script>
+				</div>
+			</div>
+			<div class="row g-4 py-5 row-cols-1 row-cols-sm-2">
+				<div class="feature feature-new col codediv border rounded">
+					<a id="latex" class="anchor"></a>
+					<div id="editor">\frac{-\hbar^2}{2m} \frac{\text{d}^2 \Psi(x)}{\text{d}x^2} + U(x) \Psi(x) = E\Psi(x)</div>
+				</div>
+				<div id="texdiv" class="feature feature-new col"></div>
+			</div>
+		</div>
+		<script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var editor = ace.edit("editor");
+			editor.resize();
+			editor.setTheme("ace/theme/tomorrow");
+			editor.session.setMode("ace/mode/latex");
+
+			function getImg(){
+				queryStr = editor.getValue();
+				var elem = document.getElementById("teximg"); 
+				if(!elem) { elem = document.createElement("img"); }
+				elem.setAttribute("src", "https://latex.codecogs.com/gif.latex?" + queryStr)
+				elem.setAttribute("style", "vertical-align: middle");
+				elem.setAttribute("id", "teximg")
+				document.getElementById("texdiv").appendChild(elem);
+			}
+			setInterval(getImg, 100);
+		</script>
+		<script>
+			$('.navbar-collapse a').click(function(){
+				$(".navbar-collapse").collapse('hide');
+			});
+		</script>
+	</body>
+</html>
