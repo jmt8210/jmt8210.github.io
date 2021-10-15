@@ -3,7 +3,8 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 		<link rel="shortcut icon" type="image/x-icon" href="image-square.jpg"/>
@@ -168,8 +169,9 @@
 				<div class="feature feature-new col d-flex flex-wrap align-items-center">
 					<img height=100% src="media/catjam.gif"/>
 				</div>
-				<div class="feature feature-new col align-middle border d-flex flex-wrap align-items-center" style="border-radius: 5px; background-color: #1ED760;">
-					<p>Coming soon... Spotify?👀</p>
+				<div class="feature feature-new col border d-flex align-items-center justify-content-center" style="border-radius: 5px; background-color: #1ED760;">
+					<button id="login-button" class="btn btn-dark">Log in with Spotify</button>
+					<div id="songinfo" style="height: 100%; width:100%"></div>
 				</div>
 			</div>
 		</div>
@@ -243,6 +245,161 @@
 					}
 				}
 			}
+		</script>
+		<script id="songinfo-template" type="text/x-handlebars-template">
+			<h2>Current Song Info</h2>
+			<table class="table table-bordered table-dark">
+				<tr>
+					<th>Time</th>
+					<th>Danceability</th>
+				</tr>
+				<tr>
+					<td>{{formatMilliToMinuteSecond progress_ms}}/{{formatMilliToMinuteSecond item.duration_ms}}</td>
+					<td>{{danceability}}</td>
+				</tr>
+				<tr>
+					<th>Song</th>
+					<th>Tempo</th>
+				</tr>
+				<tr>
+					<td>{{item.name}}</td>
+					<td>{{tempo}}</td>
+				</tr>
+				<tr>
+					<th>Artist</th>
+					<th>Time Signature</th>
+				</tr>
+				<tr>
+					<td>{{item.artists.0.name}}</td>
+					<td>{{time_signature}}</td>
+				</tr>
+				<tr>
+					<th>Album</th>
+				</tr>
+				<tr>
+					<td>{{item.album.name}}</td>
+				</tr>
+			</table>
+			<!-- <div style="float:left; width: 45%">
+				<h2>Current Song Info</h2>
+				<img src="{{item.album.images.[0].url}}"/>
+				<p>
+					<b>Time</b><br/>{{formatMilliToMinuteSecond progress_ms}}/{{formatMilliToMinuteSecond item.duration_ms}}<br/>
+					<b>Song</b><br/>{{item.name}}<br/>
+					<b>Artist</b><br/>{{item.artists.0.name}}<br/>
+					<b>Album</b><br/>{{item.album.name}}<br/>
+				</p>
+			</div>
+			<div style="float: left; height:100%; width: 45%" class="d-flex align-items-center">
+				<div>
+					<p>
+						<b>Danceability</b><br/>{{danceability}}<br/>
+						<b>Tempo</b><br/>{{tempo}}<br/>
+						<b>Time Signature</b><br/>{{time_signature}}<br/>
+					</p>
+				</div>
+			</div> -->
+    </script>
+		<script type='text/javascript' src='config.js'></script>
+		<script>
+			$('#songinfo').hide();
+			(function(){
+				var stateKey = 'spotify_auth_state';
+				function getHashParams() {
+          var hashParams = {};
+          var e, r = /([^&;=]+)=?([^&;]*)/g,
+              q = window.location.hash.substring(1);
+          while ( e = r.exec(q)) {
+             hashParams[e[1]] = decodeURIComponent(e[2]);
+          }
+          return hashParams;
+        }
+				function generateRandomString(length) {
+						var text = '';
+						var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	
+						for (var i = 0; i < length; i++) {
+							text += possible.charAt(Math.floor(Math.random() * possible.length));
+						}
+						return text;
+					};
+				var songinfoSource = document.getElementById('songinfo-template').innerHTML,
+				songinfoTemplate = Handlebars.compile(songinfoSource),
+				songinfoPlaceholder = document.getElementById('songinfo');
+				var params = getHashParams();
+				var access_token = params.access_token,
+				state = params.state,
+				storedState = localStorage.getItem(stateKey);
+
+				// Formating for time with handlebars
+        Handlebars.registerHelper('formatMilliToMinuteSecond', function(value) {
+          var minutes = parseInt(value/60000);;
+          var seconds = parseInt((value-minutes*60000)/1000);
+          if(seconds < 10){
+            seconds = "0" + seconds;
+          }
+          return '' + minutes + ":" + seconds;
+        });
+
+				if (access_token && (state == null || state !== storedState)) {
+					alert('There was an error during the authentication')
+				}else{
+					localStorage.removeItem(stateKey);
+					if(access_token){
+						setInterval(getSongInfo, 500);
+						function getSongInfo(){
+							$.ajax({
+								url: 'https://api.spotify.com/v1/me/player',
+								headers: {
+									'Authorization': 'Bearer ' + access_token
+								},
+								success: function(response) {
+									console.log(response)
+									// songinfoPlaceholder.innerHTML = songinfoTemplate(response);
+									// if(waitTil < Date.now() && Array.isArray(queue.items) && queue.items.length && response.progress_ms <= 3000 && response.item.name == queue.items[0].songTitle){
+									// 	removeFromQueue();
+									// 	waitTil = new Date(Date.now() + 3000);
+									// }
+									currentSong = response.item.name;
+									uri = response.item.id;
+
+									$.ajax({
+										url: 'https://api.spotify.com/v1/audio-features/' + uri,
+										headers: {
+											'Authorization': 'Bearer ' + access_token
+										},
+										success: function(responseExtra){
+											console.log(responseExtra);
+											combinedResponses = { ...response, ...responseExtra}
+											songinfoPlaceholder.innerHTML = songinfoTemplate(combinedResponses);
+											$('#songinfo').show();
+											$('#login-button').hide();
+										}
+									});
+								}
+							});
+						}
+					}
+				}
+				document.getElementById('login-button').addEventListener('click', function() {
+					var client_id = config.client_id;
+					var redirect_uri = 'http://localhost/justin'; // Your redirect uri
+	
+					var state = generateRandomString(16);
+	
+					localStorage.setItem(stateKey, state);
+					var scope = 'user-read-private user-read-email user-follow-read user-read-playback-state user-modify-playback-state';
+	
+					var url = 'https://accounts.spotify.com/authorize';
+					url += '?response_type=token';
+					url += '&client_id=' + encodeURIComponent(client_id);
+					url += '&scope=' + encodeURIComponent(scope);
+					url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
+					url += '&state=' + encodeURIComponent(state);
+	
+					window.location = url;
+				}, false);
+			})();
 		</script>
 	</body>
 </html>
