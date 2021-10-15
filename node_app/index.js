@@ -19,8 +19,6 @@ app.get('/justin', (req, res) => {
   res.sendFile('justin.html', {root: './public/'})
 })
 
-https.createServer({ key: fs.readFileSync('key.pem'), cert: fs.readFileSync('cert.pem') }, app).listen(httpsPort)
-
 function addToFile(ip){
   const fileData = fs.readFileSync('ip_list.txt').toString();
   if (!fileData.includes(ip)) fs.appendFile('ip_list.txt', ip + '\n', (err) => { if (err) throw err })
