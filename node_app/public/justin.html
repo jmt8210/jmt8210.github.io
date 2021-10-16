@@ -99,25 +99,29 @@
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
-			<a style="margin-left: 5%" class="navbar-brand" href="#"><img src="image-square.jpg" style="border-radius: 30px" width=40px /></a>
+			<a style="margin-left: 5%" class="navbar-brand" href="#"><div id="profpic"></div></a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			  <span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			  <ul class="navbar-nav mr-auto">
-				<li class="nav-item active">
-				<a class="nav-link" href="#weather">Weather</a>
-				</li>
-				<li class="nav-item">
-				<a class="nav-link" href="#news">News</a>
-				</li>
-				<li class="nav-item">
-				<a class="nav-link" href="#latex">LaTeX</a>
-				</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="#weather">Weather</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#news">News</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#latex">LaTeX</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#music">Music</a>
+					</li>
 			  </ul>
 			</div>
 		</nav>
 		<div class="container px-4 py-5">
+			<div id="welcome-text" class="d-flex justify-content-center"></div>
 			<div class="row g-4 py-5 row-cols-1 row-cols-sm-2">
 				<div class="feature feature-new col rssdiv border rounded">
 					<a id="news" class="anchor"></a>
@@ -158,6 +162,7 @@
 				<div id="texdiv" class="feature feature-new col d-flex flex-wrap align-items-center"></div>
 			</div>
 			<div class="row g-4 py-5 row-cols-1 row-cols-sm-3 align-middle">
+				<a id="music" class="anchor"></a>
 				<div id="tempodiv" class="feature feature-new col align-center text-center">
 					<div style="width: 100%">
 						<p width=100% class="border" style="padding: 50px; user-select: none;" id="tempo">Click here to find a tempo...</p>
@@ -246,6 +251,18 @@
 				}
 			}
 		</script>
+		<script id="profpic-template" type="text/x-handlebars-template">
+			{{#if images.0.url}}
+			<img src="{{images.0.url}}" style="border-radius: 30px" width=40px />
+			{{else}}
+			<img src="image-square.jpg" style="border-radius: 30px" width=40px />
+			{{/if}}
+		</script>
+		<script id="welcome-text-template" type="text/x-handlebars-template">
+			<div style="margin-top: 50px">
+				<h1 class="display-4">Hello {{display_name}}!</h1>
+			</div>
+		</script>
 		<script id="songinfo-template" type="text/x-handlebars-template">
 			<h2>Current Song Info</h2>
 			<table class="table table-bordered table-dark">
@@ -267,14 +284,15 @@
 				</tr>
 				<tr>
 					<th>Artist</th>
-					<th>Time Signature</th>
+					<th>Key</th>
 				</tr>
 				<tr>
 					<td>{{item.artists.0.name}}</td>
-					<td>{{time_signature}}</td>
+					<td>{{key}}</td>
 				</tr>
 				<tr>
 					<th>Album</th>
+					<td rowspan='2' ><img src="{{item.album.images.[0].url}}"/></td>
 				</tr>
 				<tr>
 					<td>{{item.album.name}}</td>
@@ -302,7 +320,17 @@
     </script>
 		<script type='text/javascript' src='config.js'></script>
 		<script>
+			var profpicSource = document.getElementById('profpic-template').innerHTML,
+			profpicTemplate = Handlebars.compile(profpicSource),
+			profpicPlaceholder = document.getElementById('profpic');
+			profpicPlaceholder.innerHTML = profpicTemplate({})
+			var welcomeTextSource = document.getElementById('welcome-text-template').innerHTML,
+			welcomeTextTemplate = Handlebars.compile(welcomeTextSource),
+			welcomeTextPlaceholder = document.getElementById('welcome-text');
+			$('#profpic').show();
 			$('#songinfo').hide();
+			$('#welcome-text').hide();
+
 			(function(){
 				var stateKey = 'spotify_auth_state';
 				function getHashParams() {
@@ -346,6 +374,18 @@
 				}else{
 					localStorage.removeItem(stateKey);
 					if(access_token){
+						$.ajax({
+              url: 'https://api.spotify.com/v1/me',
+              headers: {
+                'Authorization': 'Bearer ' + access_token
+              },
+              success: function(response) {
+								// console.log(response)
+                profpicPlaceholder.innerHTML = profpicTemplate(response);
+								welcomeTextPlaceholder.innerHTML = welcomeTextTemplate(response);
+								$('#welcome-text').show();
+							}
+						});
 						setInterval(getSongInfo, 500);
 						function getSongInfo(){
 							$.ajax({
@@ -354,28 +394,33 @@
 									'Authorization': 'Bearer ' + access_token
 								},
 								success: function(response) {
-									console.log(response)
+									// console.log(response)
 									// songinfoPlaceholder.innerHTML = songinfoTemplate(response);
 									// if(waitTil < Date.now() && Array.isArray(queue.items) && queue.items.length && response.progress_ms <= 3000 && response.item.name == queue.items[0].songTitle){
 									// 	removeFromQueue();
 									// 	waitTil = new Date(Date.now() + 3000);
 									// }
-									currentSong = response.item.name;
-									uri = response.item.id;
-
-									$.ajax({
-										url: 'https://api.spotify.com/v1/audio-features/' + uri,
-										headers: {
-											'Authorization': 'Bearer ' + access_token
-										},
-										success: function(responseExtra){
-											console.log(responseExtra);
-											combinedResponses = { ...response, ...responseExtra}
-											songinfoPlaceholder.innerHTML = songinfoTemplate(combinedResponses);
-											$('#songinfo').show();
-											$('#login-button').hide();
-										}
-									});
+									$('#songinfo').show();
+									$('#login-button').hide();
+									if(response === undefined || response.item === undefined){
+										songinfoPlaceholder.innerHTML = '<div style="height: 100%" class="d-flex align-items-center text-center"><p>Nothing is playing, head to Spotify and play a song to see its details.</p></div>'
+									}else{
+										currentSong = response.item.name;
+										uri = response.item.id;
+	
+										$.ajax({
+											url: 'https://api.spotify.com/v1/audio-features/' + uri,
+											headers: {
+												'Authorization': 'Bearer ' + access_token
+											},
+											success: function(responseExtra){
+												// console.log(responseExtra);
+												combinedResponses = { ...response, ...responseExtra}
+												songinfoPlaceholder.innerHTML = songinfoTemplate(combinedResponses);
+												
+											}
+										});
+									}
 								}
 							});
 						}
