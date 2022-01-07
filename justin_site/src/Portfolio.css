@@ -1,0 +1,56 @@
+body {
+  overflow-x: hidden;
+}
+.nav-bg {
+  background-color: #343a40!important;
+}
+.contact-link{
+  align-items: center;
+  display: flex;
+  font-size:20px;
+  text-decoration: none;
+}
+.contact-link:hover{
+  align-items: center;
+  display: flex;
+  font-size:20px;
+  text-decoration: underline;
+}
+.contact-svg{
+  margin-right: 10px;
+}
+
+.carousel-indicator {
+  position: relative;
+  bottom: -50px;
+}
+
+.card {
+  margin: 40px
+}
+
+.display-4 {
+  color: rgb(121, 191, 75);
+}
+
+.contact-link {
+  margin-left: 5px;
+}
+
+.no-dec-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.no-dec-link:hover {
+  text-decoration: none;
+  color: rgb(121, 191, 75);
+}
+
+.card {
+  flex-direction: row;
+}
+
+.card img {
+  width: 50%;
+}
